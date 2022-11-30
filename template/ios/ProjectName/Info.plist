@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>ProjectName</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>$(PRODUCT_NAME)</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>1.0</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLName</key>
+			<string>ProjectName</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>projectname</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>1</string>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Cet accès vous permettra de confirmer votre identité en nous transférant une preuve de domicile et de partager tout autre document utile avec vos voisins pour illustrer vos échanges.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Autorisez l’accès à votre appareil photo pour prendre et partager des photos avec vos voisins lors de vos échanges.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Access to the face id is needed to provide users with a convenient authorization method</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Location access is necessary to increase the comfort of using the application</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Autorisez l'accès à la géolocalisation afin de contacter les utilisateurs vivant à proximité de votre domicile.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Autorisez l'accès à votre micro afin d'envoyer des messages audio à vos voisins lors de vos échanges.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Autorisez l’accès à vos photos pour ajouter des photos ou vidéos aux messages envoyés à vos voisins et au service client.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>BootSplash.storyboard</string>
+	<key>UIRequiredDeviceCapabilities</key>
+	<array>
+		<string>armv7</string>
+	</array>
+	<key>UIRequiresFullScreen</key>
+	<true/>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
+</plist>
