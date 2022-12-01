@@ -15,6 +15,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8CDABF897DE138A90D171535 /* libPods-ProjectName.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E48B5682F3CE8C90979B6320 /* libPods-ProjectName.a */; };
 		91B92ECC572DF7EBDE7596C4 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A43D97F8E1427545D3C59A2 /* libPods-OneSignalNotificationServiceExtension.a */; };
+		AA0DC1402938FD2E00710AA3 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0DC13F2938FD2E00710AA3 /* StoreKit.framework */; };
 		AA9AE69327B6F7D60071EB7E /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9AE69227B6F7D60071EB7E /* NotificationService.m */; };
 		AA9AE69727B6F7D60071EB7E /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AA9AE68F27B6F7D50071EB7E /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -66,6 +67,7 @@
 		77BA02CD1E5F132C9BCD9202 /* Pods-ProjectName.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ProjectName.debug.xcconfig"; path = "Target Support Files/Pods-ProjectName/Pods-ProjectName.debug.xcconfig"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ProjectName/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8A43D97F8E1427545D3C59A2 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA0DC13F2938FD2E00710AA3 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		AA9AE68A27B6F7750071EB7E /* ProjectName.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ProjectName.entitlements; path = ProjectName/ProjectName.entitlements; sourceTree = "<group>"; };
 		AA9AE68F27B6F7D50071EB7E /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA9AE69127B6F7D60071EB7E /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
@@ -93,6 +95,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8CDABF897DE138A90D171535 /* libPods-ProjectName.a in Frameworks */,
+				AA0DC1402938FD2E00710AA3 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,6 +144,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA0DC13F2938FD2E00710AA3 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				E48B5682F3CE8C90979B6320 /* libPods-ProjectName.a */,
 				5BF159EF81FD9C98A392291A /* libPods-ProjectName-ProjectNameTests.a */,
