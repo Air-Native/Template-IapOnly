@@ -24,6 +24,7 @@ import {InAppBrowser} from 'react-native-inappbrowser-reborn';
 import Geolocation from '@react-native-community/geolocation';
 import RNBootSplash from 'react-native-bootsplash';
 import {URL} from 'react-native-url-polyfill';
+import changeNavigationBarColor from 'react-native-navigation-bar-color';
 
 /** Contacts */
 //import Contacts from 'react-native-contacts';
@@ -74,6 +75,15 @@ if (setFullscreenWithoutBar) {
 if (setFullscreenWithBar) {
   StatusBar.setHidden(false);
   StatusBar.setBackgroundColor('#FFFFFF00');
+}
+
+if (Platform.OS === "android") {
+  /**
+   * color
+   * white icons? => true/false, if true -> icons white color
+   * animated? => animate color change
+   */
+changeNavigationBarColor("#000000", true, false);
 }
 
 const INJECTED_JAVASCRIPT = "";
