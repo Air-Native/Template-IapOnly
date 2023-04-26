@@ -35,24 +35,37 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>comgooglemaps</string>
+		<string>twitter</string>
+		<string>whatsapp</string>
+		<string>fb</string>
+		<string>google</string>
+		<string>instagram</string>
+		<string>vk</string>
+		<string>fb-messenger</string>
+		<string>tg</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Cet accès vous permettra de confirmer votre identité en nous transférant une preuve de domicile et de partager tout autre document utile avec vos voisins pour illustrer vos échanges.</string>
+	<string>Access is required so that the user can download the files they want</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Autorisez l’accès à votre appareil photo pour prendre et partager des photos avec vos voisins lors de vos échanges.</string>
+	<string>Access to the camera is necessary to be able to take photos and videos according to his needs</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Access to the face id is needed to provide users with a convenient authorization method</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Location access is necessary to increase the comfort of using the application</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Autorisez l'accès à la géolocalisation afin de contacter les utilisateurs vivant à proximité de votre domicile.</string>
+	<string>Location access is necessary to increase the comfort of using the application</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Autorisez l'accès à votre micro afin d'envoyer des messages audio à vos voisins lors de vos échanges.</string>
+	<string>Access to the microphone is required so that the user can record audio or video with sound at the user's request</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Autorisez l’accès à vos photos pour ajouter des photos ou vidéos aux messages envoyés à vos voisins et au service client.</string>
+	<string>Access to photos is required to upload photos as required by the user</string>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>audio</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
@@ -71,17 +84,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>comgooglemaps</string>
-		<string>twitter</string>
-		<string>whatsapp</string>
-		<string>fb</string>
-		<string>google</string>
-		<string>instagram</string>
-		<string>vk</string>
-		<string>fb-messenger</string>
-		<string>tg</string>
-	</array>
 </dict>
 </plist>

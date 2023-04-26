@@ -16,6 +16,7 @@
 		8CDABF897DE138A90D171535 /* libPods-ProjectName.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E48B5682F3CE8C90979B6320 /* libPods-ProjectName.a */; };
 		91B92ECC572DF7EBDE7596C4 /* libPods-OneSignalNotificationServiceExtension.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A43D97F8E1427545D3C59A2 /* libPods-OneSignalNotificationServiceExtension.a */; };
 		AA0DC1402938FD2E00710AA3 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA0DC13F2938FD2E00710AA3 /* StoreKit.framework */; };
+		AA37F6E729F99AA400D09FFE /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA37F6E629F99AA400D09FFE /* File.swift */; };
 		AA9AE69327B6F7D60071EB7E /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = AA9AE69227B6F7D60071EB7E /* NotificationService.m */; };
 		AA9AE69727B6F7D60071EB7E /* OneSignalNotificationServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AA9AE68F27B6F7D50071EB7E /* OneSignalNotificationServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -68,6 +69,8 @@
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = ProjectName/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8A43D97F8E1427545D3C59A2 /* libPods-OneSignalNotificationServiceExtension.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-OneSignalNotificationServiceExtension.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA0DC13F2938FD2E00710AA3 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		AA37F6E529F99AA400D09FFE /* ProjectName-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ProjectName-Bridging-Header.h"; sourceTree = "<group>"; };
+		AA37F6E629F99AA400D09FFE /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		AA9AE68A27B6F7750071EB7E /* ProjectName.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = ProjectName.entitlements; path = ProjectName/ProjectName.entitlements; sourceTree = "<group>"; };
 		AA9AE68F27B6F7D50071EB7E /* OneSignalNotificationServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = OneSignalNotificationServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA9AE69127B6F7D60071EB7E /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
@@ -163,6 +166,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				AA37F6E629F99AA400D09FFE /* File.swift */,
 				13B07FAE1A68108700A75B9A /* ProjectName */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* ProjectNameTests */,
@@ -170,6 +174,7 @@
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				CCC678CD020ECFFADB38C4D0 /* Pods */,
+				AA37F6E529F99AA400D09FFE /* ProjectName-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -289,7 +294,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1430;
 					};
 					AA9AE68E27B6F7D50071EB7E = {
 						CreatedOnToolsVersion = 13.2.1;
@@ -527,6 +532,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				AA37F6E729F99AA400D09FFE /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -559,6 +565,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = BC50EE45554CB58987FC4FD1 /* Pods-ProjectName-ProjectNameTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -590,6 +597,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B6BC08F257E6D165114467CB /* Pods-ProjectName-ProjectNameTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = ProjectNameTests/Info.plist;
@@ -642,6 +650,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "ProjectName-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -676,6 +685,7 @@
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "ProjectName-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
