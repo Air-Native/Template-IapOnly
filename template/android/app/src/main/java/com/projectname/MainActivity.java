@@ -2,6 +2,9 @@ package com.projectname;
 import android.os.Bundle; // <- add this necessary import
 
 import com.facebook.react.ReactActivity;
+import com.facebook.react.ReactActivityDelegate;
+import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
+import com.facebook.react.defaults.DefaultReactActivityDelegate;
 import com.zoontek.rnbootsplash.RNBootSplash;
 
 public class MainActivity extends ReactActivity {
@@ -15,10 +18,24 @@ public class MainActivity extends ReactActivity {
     return "ProjectName";
   }
 
+  /**
+   * Returns the instance of the {@link ReactActivityDelegate}. Here we use a util class {@link
+   * DefaultReactActivityDelegate} which allows you to easily enable Fabric and Concurrent React
+   * (aka React 18) with two boolean flags.
+   */
+  @Override
+  protected ReactActivityDelegate createReactActivityDelegate() {
+    return new DefaultReactActivityDelegate(
+            this,
+            getMainComponentName(),
+            // If you opted-in for the New Architecture, we enable the Fabric Renderer.
+            DefaultNewArchitectureEntryPoint.getFabricEnabled());
+  }
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    RNBootSplash.init(this); // ⬅️ initialize the splash screen
     super.onCreate(savedInstanceState); // or super.onCreate(null) with react-native-screens
-    RNBootSplash.init(R.drawable.bootsplash, MainActivity.this); // display the generated bootsplash.xml drawable over our MainActivity
   }
 
 }
