@@ -65,7 +65,6 @@
 	<string>Access to photos is required to upload photos as required by the user</string>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>audio</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
