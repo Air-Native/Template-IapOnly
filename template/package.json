@@ -12,7 +12,7 @@
   "dependencies": {
     "@react-native-community/cli": "^11.3.6",
     "@react-native-community/geolocation": "^2.0.2",
-    "@react-native-community/netinfo": "^6.0.0",
+    "@react-native-community/netinfo": "^11.3.0",
     "@react-native/metro-config": "^0.72.9",
     "react": "^18.2.0",
     "react-native": "^0.72.3",
