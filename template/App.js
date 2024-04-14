@@ -852,6 +852,7 @@ class App extends Component {
                   >
                     <Image
                       style={{
+                        resizeMode: "contain",
                         width: logoWidth,
                         height: logoWidth,
                       }}
@@ -901,6 +902,7 @@ class App extends Component {
                   >
                     <Image
                       style={{
+                        resizeMode: "contain",
                         width: logoWidth,
                         height: logoWidth,
                       }}
