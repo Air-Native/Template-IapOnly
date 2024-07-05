@@ -25,7 +25,7 @@ import Geolocation from '@react-native-community/geolocation';
 import RNBootSplash from 'react-native-bootsplash';
 import { URL } from 'react-native-url-polyfill';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
-
+import KeepAwake from 'react-native-keep-awake';
 import Player from './controllers/Player'
 
 const PlayerInstance = new Player()
@@ -178,6 +178,9 @@ class App extends Component {
     this.invoke.define('getDeviceOS', this.getDeviceOS);
     this.invoke.define('showPrompt', this.showPrompt);
     this.invoke.define('getPermissionsUser', this.getPermissionsUser);
+
+    this.invoke.define('keepAwake', this.changeKeepAwake);
+
     if (this.state.contactsEnabled) {
       this.invoke.define('getContacts', this.getContacts);
     }
@@ -236,6 +239,15 @@ class App extends Component {
     }
     this.appStateChecker.remove();
   }
+
+  /** Enable Keep Awake */
+  changeKeepAwake = (shouldBeAwake) => {
+    if (shouldBeAwake) {
+      KeepAwake.activate();
+    } else {
+      KeepAwake.deactivate();
+    } 
+  };
 
   /** Platform OS */
   getDeviceOS = () => {
