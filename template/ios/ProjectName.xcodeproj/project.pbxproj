@@ -361,7 +361,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\n../node_modules/react-native/scripts/react-native-xcode.sh\n\n";
+			shellScript = "";
 		};
 		09CACCA295D2715DA28A36F9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
