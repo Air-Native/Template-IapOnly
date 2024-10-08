@@ -69,5 +69,5 @@ end
 end
 
 target 'OneSignalNotificationServiceExtension' do
-pod 'OneSignalXCFramework', '>= 3.0', '< 4.0'
+  pod 'OneSignalXCFramework', '>= 5.0.0', '< 6.0'
 end

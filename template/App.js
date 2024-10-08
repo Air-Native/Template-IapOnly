@@ -16,7 +16,7 @@ import {
 
 import { WebView } from 'react-native-webview';
 import NetInfo from '@react-native-community/netinfo';
-import OneSignal from 'react-native-onesignal';
+// import OneSignal from 'react-native-onesignal';
 import createInvoke from 'react-native-webview-invoke/native';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 import Share from 'react-native-share';
@@ -26,7 +26,9 @@ import RNBootSplash from 'react-native-bootsplash';
 import { URL } from 'react-native-url-polyfill';
 import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import KeepAwake from 'react-native-keep-awake';
-import Player from './controllers/Player'
+import Player from './controllers/Player';
+
+import OneSignal from './controllers/OneSignal'
 
 const PlayerInstance = new Player()
 
@@ -40,7 +42,8 @@ import * as RNIap from 'react-native-iap';
 const enableIAP = true;
 
 /** OneSignal App ID - тут ставит id приложения юзера для инициализации OneSignal */
-OneSignal.setAppId('0675c400-8062-45e2-8ed3-0fbb862a0ef6');
+// OneSignal.setAppId('0675c400-8062-45e2-8ed3-0fbb862a0ef6');
+OneSignal.initialize();
 
 /** Если поставить
  *  setFullscreenWithoutBar = true
@@ -127,7 +130,7 @@ class App extends Component {
     }
 
     Linking.addEventListener('url', ({ url }) => {
-      if (this.webview) {
+      if (this.webview && this.state.isConnected) {
         this.webview.injectJavaScript(
           `window.location.href = "${url.replace(scheme, 'https://')}"`
         );
@@ -137,7 +140,8 @@ class App extends Component {
     this.appStateChecker = AppState.addEventListener('change', (newState) => {
       if (
         this.state.appState.match(/inactive|background/) &&
-        newState === 'active'
+        newState === 'active' &&
+        this.state.isConnected
       ) {
         this.triggerEvent('loaded_from_background');
       }
@@ -166,7 +170,7 @@ class App extends Component {
     BackHandler.addEventListener('hardwareBackPress', this.backAction);
 
     this.invoke.define('biometrycScan', this.authCurrent);
-    this.invoke.define('oneSignalGetId', this.oneSignalGetId);
+    this.invoke.define('oneSignalGetId', OneSignal.oneSignalGetId);
     this.invoke.define('alertWord', this.alertWord);
     this.invoke.define('stopScaner', this.stopScaner);
     this.invoke.define('vibration', this.makeBrr);
@@ -176,7 +180,7 @@ class App extends Component {
     this.invoke.define('stopLocationTracking', this.stopLocationTracking);
     this.invoke.define('setStatusBarColor', this.setStatusBarColor);
     this.invoke.define('getDeviceOS', this.getDeviceOS);
-    this.invoke.define('showPrompt', this.showPrompt);
+    this.invoke.define('showPrompt', OneSignal.showPrompt);
     this.invoke.define('getPermissionsUser', this.getPermissionsUser);
 
     this.invoke.define('keepAwake', this.changeKeepAwake);
@@ -252,15 +256,6 @@ class App extends Component {
   /** Platform OS */
   getDeviceOS = () => {
     return Platform.OS;
-  };
-
-  /** PushPrompt */
-  showPrompt = () => {
-    OneSignal.getDeviceState().then((data) => {
-      if (data.isSubscribed == false) {
-        OneSignal.addTrigger('prompt_ios', 'true');
-      }
-    });
   };
 
   /** Contacts */
@@ -494,7 +489,7 @@ class App extends Component {
       }); //Указываем что первая загрузка была и более сплэш скрин нам не нужен
       RNBootSplash.hide(); // Отключаем сплэш скрин
       Linking.getInitialURL().then((url) => {
-        if (url) {
+        if (url && this.state.isConnected) {
           this.webview.injectJavaScript(
             `window.location.href = "${url.replace(scheme, 'https://')}"`
           );
@@ -652,10 +647,6 @@ class App extends Component {
     });
   };
 
-  oneSignalGetId = async () => {
-    return await OneSignal.getDeviceState();
-  };
-
   alertWord = (title, text) => {
     Alert.alert(title, text);
   };
@@ -787,15 +778,9 @@ class App extends Component {
   onContentProcessDidTerminate = () => this.webview.reload();
 
   handleWebViewNavigationStateChange = (navState) => {
-    const { url } = navState;
-
-    this.setState({
-      canGoBack: navState.canGoBack
-    });
-
-    if (!url) {
-      return;
-    }
+    const {url} = navState;
+    
+    if (!url) return false;
 
     if (
       !url.includes(hostURL) &&
@@ -803,24 +788,26 @@ class App extends Component {
       !url.includes('auth') &&
       !url.includes('.bubbleapps.io/api/1.1/oauth_redirect')
     ) {
-      this.webview.stopLoading();
-      InAppBrowser.isAvailable().then((available) => {
+      // this.webview.stopLoading();
+      InAppBrowser.isAvailable().then(available => {
         if (available) {
           InAppBrowser.open(url, {
             modalPresentationStyle: 'fullScreen',
           });
         } else {
-          Linking.canOpenURL(url).then((canOpen) => {
-            if (canOpen) {
-              Linking.openURL(url);
-            }
+          Linking.canOpenURL(url).then(canOpen => {
+            if (canOpen) Linking.openURL(url);
           });
         }
       });
+      return false;
     } else {
       this.setState({
         currentURL: url,
+        canGoBack: navState.canGoBack
       });
+
+      return true;
     }
   };
 
@@ -839,7 +826,7 @@ class App extends Component {
               injectedJavaScript={INJECTED_JAVASCRIPT}
               ref={(ref) => (this.webview = ref)}
               onContentProcessDidTerminate={this.onContentProcessDidTerminate}
-              onNavigationStateChange={this.handleWebViewNavigationStateChange}
+              onShouldStartLoadWithRequest={this.handleWebViewNavigationStateChange}
               decelerationRate={'normal'}
               onMessage={this.invoke.listener}
               allowsBackForwardNavigationGestures={true}
@@ -889,7 +876,7 @@ class App extends Component {
               injectedJavaScript={INJECTED_JAVASCRIPT}
               ref={(ref) => (this.webview = ref)}
               onContentProcessDidTerminate={this.onContentProcessDidTerminate}
-              onNavigationStateChange={this.handleWebViewNavigationStateChange}
+              onShouldStartLoadWithRequest={this.handleWebViewNavigationStateChange}
               decelerationRate={'normal'}
               onMessage={this.invoke.listener}
               allowsBackForwardNavigationGestures={true}
