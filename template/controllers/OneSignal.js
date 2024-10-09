@@ -16,9 +16,9 @@ const showPrompt = () => {
 
 const oneSignalGetId = async () => {
     const userId = await OneSignal.User.getOnesignalId();
-    return {userId};
-
-  };
+	const isSubscribed = await OneSignal.Notifications.getPermissionAsync()
+    return {userId, isSubscribed};
+};
 
 module.exports = {
 	initialize,
