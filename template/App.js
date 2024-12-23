@@ -16,7 +16,6 @@ import {
 
 import { WebView } from 'react-native-webview';
 import NetInfo from '@react-native-community/netinfo';
-// import OneSignal from 'react-native-onesignal';
 import createInvoke from 'react-native-webview-invoke/native';
 import FingerprintScanner from 'react-native-fingerprint-scanner';
 import Share from 'react-native-share';
@@ -32,17 +31,10 @@ import OneSignal from './controllers/OneSignal'
 
 const PlayerInstance = new Player()
 
-
-/** Contacts */
-//import Contacts from 'react-native-contacts';
-const enableContacts = false;
-
 /** IN-APP Purchase */
 import * as RNIap from 'react-native-iap';
-const enableIAP = true;
 
 /** OneSignal App ID - тут ставит id приложения юзера для инициализации OneSignal */
-// OneSignal.setAppId('0675c400-8062-45e2-8ed3-0fbb862a0ef6');
 OneSignal.initialize();
 
 /** Если поставить
@@ -57,7 +49,7 @@ const setFullscreenWithoutBar = false;
  */
 const setFullscreenWithBar = false;
 const USER_AGENT =
-"Mozilla/5.0 (Linux; Android 5.0.1; Nokia 1000 wifi Build/GRK39F) AppleWebKit/533.12 (KHTML, like Gecko)  Chrome/50.0.1011.255 Mobile Safari/600.7";
+  "Mozilla/5.0 (Linux; Android 5.0.1; Nokia 1000 wifi Build/GRK39F) AppleWebKit/533.12 (KHTML, like Gecko)  Chrome/50.0.1011.255 Mobile Safari/600.7";
 
 /** Ссылка на приложение юзера */
 const userURL = 'https://easyhorse.co.uk/zqtest';
@@ -102,22 +94,11 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      iapEnabled: enableIAP === true, // set TRUE if need in-app purchases
-      contactsEnabled: enableContacts === true, //set TRUE if need native contacts
+      inAppBrowserAvailable: false,
       isConnected: true,
-      filePath: null,
-      fileData: null,
-      fileUri: null,
-      isAvailable: null,
       watchID: null,
       firstLoad: true,
-      productIds: [],
-      products: [],
-      headerColor: '#FFC529',
-      headerVisible: false,
       bgColor: '#FFF',
-      centerButtonFN: function () {},
-      rightButtonFN: function () {},
       appState: AppState.currentState,
       currentURL: userURL,
       canGoBack: false,
@@ -125,9 +106,13 @@ class App extends Component {
   }
 
   componentDidMount() {
-    if (this.state.iapEnabled) {
       RNIap.initConnection();
-    }
+
+      // Check in app browser availability
+		InAppBrowser.isAvailable().then(available => {
+			this.setState({ inAppBrowserAvailable: available });
+		});
+
 
     Linking.addEventListener('url', ({ url }) => {
       if (this.webview && this.state.isConnected) {
@@ -182,21 +167,16 @@ class App extends Component {
     this.invoke.define('getDeviceOS', this.getDeviceOS);
     this.invoke.define('showPrompt', OneSignal.showPrompt);
     this.invoke.define('getPermissionsUser', this.getPermissionsUser);
+    this.invoke.define('openExternalLink', this.openExternalLink);
 
     this.invoke.define('keepAwake', this.changeKeepAwake);
 
-    if (this.state.contactsEnabled) {
-      this.invoke.define('getContacts', this.getContacts);
-    }
-
-    if (this.state.iapEnabled) {
       this.invoke.define('requestPurchase', this.requestPurchase);
       this.invoke.define('fetchProducts', this.fetchProducts);
       this.invoke.define('fetchSubscriptions', this.fetchSubscriptions);
       this.invoke.define('restorePurchase', this.goToRestore);
       this.invoke.define('getAllProducts', this.getAllProducts);
       this.invoke.define('findPurchase', this.findPurchase);
-    }
 
     NetInfo.addEventListener((state) => {
       this.setState({
@@ -205,6 +185,33 @@ class App extends Component {
       this.render();
     });
   }
+
+  componentWillUnmount() {
+      RNIap.endConnection();
+    this.appStateChecker.remove();
+  }
+
+  /** Open External Link */
+	openExternalLink = (url = '', inAppBrowser = false) => {
+		try {
+			if (!url) return false;
+			if (inAppBrowser && this.state.inAppBrowserAvailable) {
+				InAppBrowser.open(url, {
+					modalPresentationStyle: 'fullScreen',
+				});
+				return;
+			}
+
+			Linking.canOpenURL(url)
+				.then( canOpen => {
+					if (canOpen) Linking.openURL(url);
+				})
+
+		} catch (error) {
+			console.error('Open external link error: ', error);
+		}
+	};
+
   getPermissionsUser = async (permissionName) => {
     const PERMISSION_LIST = {
       location: PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
@@ -237,12 +244,6 @@ class App extends Component {
       Alert.alert('Get permission error: ', error.message);
     }
   };
-  componentWillUnmount() {
-    if (this.state.iapEnabled) {
-      RNIap.endConnection();
-    }
-    this.appStateChecker.remove();
-  }
 
   /** Enable Keep Awake */
   changeKeepAwake = (shouldBeAwake) => {
@@ -250,7 +251,7 @@ class App extends Component {
       KeepAwake.activate();
     } else {
       KeepAwake.deactivate();
-    } 
+    }
   };
 
   /** Platform OS */
@@ -289,10 +290,10 @@ class App extends Component {
                 _p_birthday:
                   contact.birthday !== null && contact.birthday !== undefined
                     ? new Date(
-                        contact.birthday.year,
-                        contact.birthday.month,
-                        contact.birthday.day
-                      )
+                      contact.birthday.year,
+                      contact.birthday.month,
+                      contact.birthday.day
+                    )
                     : null,
                 _p_emailAddress:
                   contact.emailAddresses[0] !== undefined
@@ -378,19 +379,19 @@ class App extends Component {
               const purchaseObj =
                 Platform.OS === "android"
                   ? {
-                      sku: sku.trim(),
-                      subscriptionOffers: [
-                        {
-                          sku: sku.trim(),
-                          offerToken:
-                            subscriptionList[0].subscriptionOfferDetails[0]
-                              .offerToken,
-                        },
-                      ],
-                    }
+                    sku: sku.trim(),
+                    subscriptionOffers: [
+                      {
+                        sku: sku.trim(),
+                        offerToken:
+                          subscriptionList[0].subscriptionOfferDetails[0]
+                            .offerToken,
+                      },
+                    ],
+                  }
                   : {
-                      sku: sku.trim(),
-                    };
+                    sku: sku.trim(),
+                  };
 
               RNIap.requestSubscription(purchaseObj).catch(
                 (transactionError) => {
@@ -475,7 +476,7 @@ class App extends Component {
 
   getPurchaseHistory = () => {
     RNIap.clearTransactionIOS();
-    RNIap.getPurchaseHistory().then((history) => {});
+    RNIap.getPurchaseHistory().then((history) => { });
   };
   /** In-App End */
 
@@ -668,7 +669,7 @@ class App extends Component {
   };
 
   backAction = (e) => {
-    if ( this.webview && this.state.canGoBack ) this.webview.goBack();
+    if (this.webview && this.state.canGoBack) this.webview.goBack();
     this.triggerEvent('back_button');
     return true;
   };
@@ -778,8 +779,8 @@ class App extends Component {
   onContentProcessDidTerminate = () => this.webview.reload();
 
   handleWebViewNavigationStateChange = (navState) => {
-    const {url} = navState;
-    
+    const { url } = navState;
+
     if (!url) return false;
 
     if (
