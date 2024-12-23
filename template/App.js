@@ -313,49 +313,6 @@ class App extends Component {
   /** -------- */
 
   /** In-App functions */
-
-  /** Deprecated */
-  fetchProducts = async (products) => {
-    function onlyUnique(value, index, self) {
-      return self.indexOf(value) === index;
-    }
-
-    let list = await RNIap.getProducts(products);
-    let data;
-    if (this.state.products.length > 0) {
-      data = this.state.products.concat(list);
-    } else {
-      data = list;
-    }
-
-    data.filter(onlyUnique);
-
-    this.setState({
-      products: data,
-    });
-    return true;
-  };
-  /** Deprecated */
-  fetchSubscriptions = async (subs) => {
-    function onlyUnique(value, index, self) {
-      return self.indexOf(value) === index;
-    }
-    let list = await RNIap.getSubscriptions(subs);
-    let data;
-    if (this.state.products.length > 0) {
-      data = this.state.products.concat(list);
-    } else {
-      data = list;
-    }
-
-    data.filter(onlyUnique);
-    this.setState({
-      products: data,
-    });
-
-    return true;
-  };
-
   requestPurchase = async (sku, isSubscription) => {
     return await new Promise((resolve, reject) => {
       const listener = RNIap.purchaseUpdatedListener((event) => {
@@ -364,6 +321,17 @@ class App extends Component {
           console.error('Transaction failed');
           reject('Transaction failed');
         }
+
+        // Finish the transaction
+        RNIap.finishTransaction(event, true)
+          .then( finished => {
+            console.log("Transaction finished successfully!", finished);
+            resolve(event);
+          })
+          .catch( error => {
+            console.error('Error finishing transaction:', error);
+            reject('Error finishing transaction');
+          })
 
         resolve(event);
       });
@@ -430,19 +398,7 @@ class App extends Component {
       }
     });
   };
-  /** Deprecated */
-  getAllProducts = async () => {
-    var listOfProducts = [];
-    this.state.products.forEach((p) => {
-      listOfProducts.push({
-        _p_Title: p.title,
-        '_p_Product ID': p.productId,
-        _p_Currency: p.currency,
-        _p_Price: p.price,
-      });
-    });
-    return listOfProducts;
-  };
+ 
 
   goToRestore = (pack_name, product_id) => {
     if (Platform.OS === 'ios') {
@@ -484,9 +440,7 @@ class App extends Component {
   firstLoadEnd = () => {
     if (this.state.firstLoad) {
       this.setState({
-        firstLoad: false,
-        rightButtonFN: this.triggerRightButton,
-        centerButtonFN: this.triggerCenterButton,
+        firstLoad: false
       }); //Указываем что первая загрузка была и более сплэш скрин нам не нужен
       RNBootSplash.hide(); // Отключаем сплэш скрин
       Linking.getInitialURL().then((url) => {
@@ -497,18 +451,6 @@ class App extends Component {
         }
       });
     }
-  };
-
-  toggleHeaderButton = () => {
-    this.setState({
-      headerVisible: !this.state.headerVisible,
-    });
-  };
-
-  setHeaderButtonColor = (color) => {
-    this.setState({
-      headerColor: color,
-    });
   };
 
   /** Status Bar Settings */
@@ -705,11 +647,6 @@ class App extends Component {
   /** Извлекаем прямо из бабла функции, тут же можно прописать загрузку файлов в bubble */
   publishState = this.invoke.bind('publishState');
   triggerEvent = this.invoke.bind('triggerEvent');
-  canUploadFile = this.invoke.bind('canUploadFile');
-  uploadFile = this.invoke.bind('uploadFile');
-
-  triggerRightButton = this.invoke.bind('rightButton');
-  triggerCenterButton = this.invoke.bind('centerButton');
 
   permissionsGet = async () => {
     let read = PermissionsAndroid.check(
