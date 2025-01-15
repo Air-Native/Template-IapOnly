@@ -322,7 +322,10 @@ class App extends Component {
               if (productsList.length === 0) {
                 throw new Error('This product not found');
               }
-              RNIap.requestPurchase({ skus: [sku.trim()] }).catch(
+
+              const requestBody = Platform.OS === 'android' ? { skus: [sku.trim()] } : { sku: sku.trim() };
+
+              RNIap.requestPurchase(requestBody).catch(
                 (transactionError) => {
                   listener.remove();
                   reject('Error in transaction: ' + transactionError.message);
