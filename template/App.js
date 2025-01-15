@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { Component } from 'react';
 import {
   Alert,
@@ -27,9 +28,9 @@ import changeNavigationBarColor from 'react-native-navigation-bar-color';
 import KeepAwake from 'react-native-keep-awake';
 import Player from './controllers/Player';
 
-import OneSignal from './controllers/OneSignal'
+import OneSignal from './controllers/OneSignal';
 
-const PlayerInstance = new Player()
+const PlayerInstance = new Player();
 
 /** IN-APP Purchase */
 import * as RNIap from 'react-native-iap';
@@ -49,7 +50,7 @@ const setFullscreenWithoutBar = false;
  */
 const setFullscreenWithBar = false;
 const USER_AGENT =
-  "Mozilla/5.0 (Linux; Android 5.0.1; Nokia 1000 wifi Build/GRK39F) AppleWebKit/533.12 (KHTML, like Gecko)  Chrome/50.0.1011.255 Mobile Safari/600.7";
+  'Mozilla/5.0 (Linux; Android 5.0.1; Nokia 1000 wifi Build/GRK39F) AppleWebKit/533.12 (KHTML, like Gecko)  Chrome/50.0.1011.255 Mobile Safari/600.7';
 
 /** Ссылка на приложение юзера */
 const userURL = 'https://easyhorse.co.uk/zqtest';
@@ -79,16 +80,16 @@ if (setFullscreenWithBar) {
   StatusBar.setBackgroundColor('#FFFFFF00');
 }
 
-if (Platform.OS === "android") {
+if (Platform.OS === 'android') {
   /**
    * color
    * white icons? => true/false, if true -> icons white color
    * animated? => animate color change
    */
-  changeNavigationBarColor("#000000", true, false);
+  changeNavigationBarColor('#000000', true, false);
 }
 
-const INJECTED_JAVASCRIPT = "";
+const INJECTED_JAVASCRIPT = '';
 
 class App extends Component {
   constructor(props) {
@@ -106,13 +107,12 @@ class App extends Component {
   }
 
   componentDidMount() {
-      RNIap.initConnection();
+    RNIap.initConnection();
 
-      // Check in app browser availability
-		InAppBrowser.isAvailable().then(available => {
-			this.setState({ inAppBrowserAvailable: available });
-		});
-
+    // Check in app browser availability
+    InAppBrowser.isAvailable().then((available) => {
+      this.setState({ inAppBrowserAvailable: available });
+    });
 
     Linking.addEventListener('url', ({ url }) => {
       if (this.webview && this.state.isConnected) {
@@ -136,21 +136,19 @@ class App extends Component {
       });
     });
 
-    PlayerInstance.setupPlayer()
-    // setTimeout(PlayerInstance.play, 25000)
+    PlayerInstance.setupPlayer();
 
     this.invoke
-      .define("play", PlayerInstance.play)
-      .define("pause", PlayerInstance.pause)
-      .define("addToQueue", PlayerInstance.addToQueue)
-      .define("setQueue", PlayerInstance.setQueue)
-      .define("playNext", PlayerInstance.playNext)
-      .define("playPrevious", PlayerInstance.playPrevious)
-      .define("setVolume", PlayerInstance.setVolume)
-      .define("setRepeatMode", PlayerInstance.setRepeatMode)
-      .define("getCurrentTrack", PlayerInstance.getCurrentTrack)
-      .define("getCurrentState", PlayerInstance.getCurrentState)
-
+      .define('play', PlayerInstance.play)
+      .define('pause', PlayerInstance.pause)
+      .define('addToQueue', PlayerInstance.addToQueue)
+      .define('setQueue', PlayerInstance.setQueue)
+      .define('playNext', PlayerInstance.playNext)
+      .define('playPrevious', PlayerInstance.playPrevious)
+      .define('setVolume', PlayerInstance.setVolume)
+      .define('setRepeatMode', PlayerInstance.setRepeatMode)
+      .define('getCurrentTrack', PlayerInstance.getCurrentTrack)
+      .define('getCurrentState', PlayerInstance.getCurrentState);
 
     BackHandler.addEventListener('hardwareBackPress', this.backAction);
 
@@ -171,12 +169,12 @@ class App extends Component {
 
     this.invoke.define('keepAwake', this.changeKeepAwake);
 
-      this.invoke.define('requestPurchase', this.requestPurchase);
-      this.invoke.define('fetchProducts', this.fetchProducts);
-      this.invoke.define('fetchSubscriptions', this.fetchSubscriptions);
-      this.invoke.define('restorePurchase', this.goToRestore);
-      this.invoke.define('getAllProducts', this.getAllProducts);
-      this.invoke.define('findPurchase', this.findPurchase);
+    this.invoke.define('requestPurchase', this.requestPurchase);
+    this.invoke.define('fetchProducts', this.fetchProducts);
+    this.invoke.define('fetchSubscriptions', this.fetchSubscriptions);
+    this.invoke.define('restorePurchase', this.goToRestore);
+    this.invoke.define('getAllProducts', this.getAllProducts);
+    this.invoke.define('findPurchase', this.findPurchase);
 
     NetInfo.addEventListener((state) => {
       this.setState({
@@ -187,30 +185,28 @@ class App extends Component {
   }
 
   componentWillUnmount() {
-      RNIap.endConnection();
+    RNIap.endConnection();
     this.appStateChecker.remove();
   }
 
   /** Open External Link */
-	openExternalLink = (url = '', inAppBrowser = false) => {
-		try {
-			if (!url) return false;
-			if (inAppBrowser && this.state.inAppBrowserAvailable) {
-				InAppBrowser.open(url, {
-					modalPresentationStyle: 'fullScreen',
-				});
-				return;
-			}
+  openExternalLink = (url = '', inAppBrowser = false) => {
+    try {
+      if (!url) return false;
+      if (inAppBrowser && this.state.inAppBrowserAvailable) {
+        InAppBrowser.open(url, {
+          modalPresentationStyle: 'fullScreen',
+        });
+        return;
+      }
 
-			Linking.canOpenURL(url)
-				.then( canOpen => {
-					if (canOpen) Linking.openURL(url);
-				})
-
-		} catch (error) {
-			console.error('Open external link error: ', error);
-		}
-	};
+      Linking.canOpenURL(url).then((canOpen) => {
+        if (canOpen) Linking.openURL(url);
+      });
+    } catch (error) {
+      console.error('Open external link error: ', error);
+    }
+  };
 
   getPermissionsUser = async (permissionName) => {
     const PERMISSION_LIST = {
@@ -259,59 +255,6 @@ class App extends Component {
     return Platform.OS;
   };
 
-  /** Contacts */
-  getContacts = () => {
-    return new Promise((resolve, reject) => {
-      Contacts.checkPermission().then((permission) => {
-        if (permission === 'undefined') {
-          Contacts.requestPermission().then(() => {
-            resolve(this.getContacts());
-          });
-        }
-        if (permission === 'authorized') {
-          Contacts.getAll().then((contacts) => {
-            let listOfContacts = contacts.map((contact, index, array) => {
-              return {
-                _p_familyName: contact.familyName,
-                _p_givenName: contact.givenName,
-                _p_middleName: contact.middleName,
-                _p_firstNumber:
-                  contact.phoneNumbers[0] !== undefined
-                    ? contact.phoneNumbers[0].number
-                    : '',
-                _p_secondNumber:
-                  contact.phoneNumbers[1] !== undefined
-                    ? contact.phoneNumbers[1].number
-                    : '',
-                _p_thirdNumber:
-                  contact.phoneNumbers[2] !== undefined
-                    ? contact.phoneNumbers[2].number
-                    : '',
-                _p_birthday:
-                  contact.birthday !== null && contact.birthday !== undefined
-                    ? new Date(
-                      contact.birthday.year,
-                      contact.birthday.month,
-                      contact.birthday.day
-                    )
-                    : null,
-                _p_emailAddress:
-                  contact.emailAddresses[0] !== undefined
-                    ? contact.emailAddresses[0].email
-                    : '',
-              };
-            });
-            resolve(listOfContacts);
-          });
-        }
-        if (permission === 'denied') {
-          resolve('Permission to contacts denied!');
-        }
-      });
-    });
-  };
-  /** -------- */
-
   /** In-App functions */
   requestPurchase = async (sku, isSubscription) => {
     return await new Promise((resolve, reject) => {
@@ -324,14 +267,14 @@ class App extends Component {
 
         // Finish the transaction
         RNIap.finishTransaction(event, true)
-          .then( finished => {
-            console.log("Transaction finished successfully!", finished);
+          .then((finished) => {
+            console.log('Transaction finished successfully!', finished);
             resolve(event);
           })
-          .catch( error => {
+          .catch((error) => {
             console.error('Error finishing transaction:', error);
             reject('Error finishing transaction');
-          })
+          });
 
         resolve(event);
       });
@@ -345,21 +288,21 @@ class App extends Component {
               }
 
               const purchaseObj =
-                Platform.OS === "android"
+                Platform.OS === 'android'
                   ? {
-                    sku: sku.trim(),
-                    subscriptionOffers: [
-                      {
-                        sku: sku.trim(),
-                        offerToken:
-                          subscriptionList[0].subscriptionOfferDetails[0]
-                            .offerToken,
-                      },
-                    ],
-                  }
+                      sku: sku.trim(),
+                      subscriptionOffers: [
+                        {
+                          sku: sku.trim(),
+                          offerToken:
+                            subscriptionList[0].subscriptionOfferDetails[0]
+                              .offerToken,
+                        },
+                      ],
+                    }
                   : {
-                    sku: sku.trim(),
-                  };
+                      sku: sku.trim(),
+                    };
 
               RNIap.requestSubscription(purchaseObj).catch(
                 (transactionError) => {
@@ -398,7 +341,6 @@ class App extends Component {
       }
     });
   };
- 
 
   goToRestore = (pack_name, product_id) => {
     if (Platform.OS === 'ios') {
@@ -432,7 +374,7 @@ class App extends Component {
 
   getPurchaseHistory = () => {
     RNIap.clearTransactionIOS();
-    RNIap.getPurchaseHistory().then((history) => { });
+    RNIap.getPurchaseHistory().then((history) => {});
   };
   /** In-App End */
 
@@ -440,7 +382,7 @@ class App extends Component {
   firstLoadEnd = () => {
     if (this.state.firstLoad) {
       this.setState({
-        firstLoad: false
+        firstLoad: false,
       }); //Указываем что первая загрузка была и более сплэш скрин нам не нужен
       RNBootSplash.hide(); // Отключаем сплэш скрин
       Linking.getInitialURL().then((url) => {
@@ -498,7 +440,7 @@ class App extends Component {
   };
 
   geoError = (error) => {
-    this.publishState('current_position', "");
+    this.publishState('current_position', '');
     //Alert.alert('Geo Error:', `${JSON.stringify(error)}`);
     /** Нужно придумать что-то для вывода ошибок, а то бесит через алёрты это делать
      * Может быть тригерить евент "Ошибка" и в стэйт передавать инфо о ошибке.
@@ -703,7 +645,7 @@ class App extends Component {
       this.permissionsGet();
     }
     this.firstLoadEnd();
-    PlayerInstance.bindFunctions(this.invoke)
+    PlayerInstance.bindFunctions(this.invoke);
     this.publishState('platform_os', Platform.OS); //Возвращаем операционку
   };
 
@@ -727,13 +669,13 @@ class App extends Component {
       !url.includes('.bubbleapps.io/api/1.1/oauth_redirect')
     ) {
       // this.webview.stopLoading();
-      InAppBrowser.isAvailable().then(available => {
+      InAppBrowser.isAvailable().then((available) => {
         if (available) {
           InAppBrowser.open(url, {
             modalPresentationStyle: 'fullScreen',
           });
         } else {
-          Linking.canOpenURL(url).then(canOpen => {
+          Linking.canOpenURL(url).then((canOpen) => {
             if (canOpen) Linking.openURL(url);
           });
         }
@@ -742,7 +684,7 @@ class App extends Component {
     } else {
       this.setState({
         currentURL: url,
-        canGoBack: navState.canGoBack
+        canGoBack: navState.canGoBack,
       });
 
       return true;
@@ -785,7 +727,7 @@ class App extends Component {
                   >
                     <Image
                       style={{
-                        resizeMode: "contain",
+                        resizeMode: 'contain',
                         width: logoWidth,
                         height: logoWidth,
                       }}
@@ -835,7 +777,7 @@ class App extends Component {
                   >
                     <Image
                       style={{
-                        resizeMode: "contain",
+                        resizeMode: 'contain',
                         width: logoWidth,
                         height: logoWidth,
                       }}
