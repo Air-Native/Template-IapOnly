@@ -266,8 +266,7 @@ class App extends Component {
         }
 
         // Finish the transaction
-        if (!isSubscription) {
-          RNIap.finishTransaction(event)
+          RNIap.finishTransaction({purchase: event})
             .then((finished) => {
               console.log('Transaction finished successfully!', finished);
               resolve(event);
@@ -276,9 +275,6 @@ class App extends Component {
               console.error('Error finishing transaction:', error);
               reject('Error finishing transaction');
             });
-        } else {
-          resolve(event);
-        }
       });
 
       try {
