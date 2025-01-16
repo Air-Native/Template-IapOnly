@@ -266,17 +266,19 @@ class App extends Component {
         }
 
         // Finish the transaction
-        RNIap.finishTransaction(event, true)
-          .then((finished) => {
-            console.log('Transaction finished successfully!', finished);
-            resolve(event);
-          })
-          .catch((error) => {
-            console.error('Error finishing transaction:', error);
-            reject('Error finishing transaction');
-          });
-
-        resolve(event);
+        if (!isSubscription) {
+          RNIap.finishTransaction(event)
+            .then((finished) => {
+              console.log('Transaction finished successfully!', finished);
+              resolve(event);
+            })
+            .catch((error) => {
+              console.error('Error finishing transaction:', error);
+              reject('Error finishing transaction');
+            });
+        } else {
+          resolve(event);
+        }
       });
 
       try {
