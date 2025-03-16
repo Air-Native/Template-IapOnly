@@ -13,6 +13,7 @@ import {
   SafeAreaView,
   Linking,
   AppState,
+  NativeModules
 } from 'react-native';
 
 import { WebView } from 'react-native-webview';
@@ -31,6 +32,9 @@ import Player from './controllers/Player';
 import OneSignal from './controllers/OneSignal';
 
 const PlayerInstance = new Player();
+
+const { ImageClipboard } = NativeModules;
+
 
 /** IN-APP Purchase */
 import * as RNIap from 'react-native-iap';
@@ -167,6 +171,9 @@ class App extends Component {
     this.invoke.define('getPermissionsUser', this.getPermissionsUser);
     this.invoke.define('openExternalLink', this.openExternalLink);
 
+
+    this.invoke.define('copyBase64ImageToClipboard', this.copyBase64ImageToClipboard);
+
     this.invoke.define('keepAwake', this.changeKeepAwake);
 
     this.invoke.define('requestPurchase', this.requestPurchase);
@@ -188,6 +195,22 @@ class App extends Component {
     RNIap.endConnection();
     this.appStateChecker.remove();
   }
+
+  /** Copy Image To Clipboard */
+	copyBase64ImageToClipboard = (base64Image) => {
+		if (Platform.OS === 'ios') return;
+
+
+		const pureBase64 = base64Image.replace(/^data:image\/\w+;base64,/, ""); // Remove data prefix
+
+			ImageClipboard.copyBase64ImageToClipboard(pureBase64)
+				.then(() => {
+					console.log('Image copied to clipboard');
+				})
+				.catch((error) => {
+					console.error(error);
+				})
+	}
 
   /** Open External Link */
   openExternalLink = (url = '', inAppBrowser = false) => {
